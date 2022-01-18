@@ -1,17 +1,19 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import "components/Button.scss";
 
 export default function Button(props) {
+
    let buttonClass = "button";
 
    if (props.confirm) {
-      buttonClass += "button--confirm";
+      buttonClass += "--confirm";
    }
 
    if (props.danger) {
-      buttonClass += "button--danger";
+      buttonClass += "--danger";
    }
+
 
    return <button
       className={buttonClass}
@@ -19,5 +21,5 @@ export default function Button(props) {
       disabled={props.disabled}
    >
       {props.children}
-   </button>;
+   </button>
 }
