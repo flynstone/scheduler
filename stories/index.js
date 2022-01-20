@@ -17,6 +17,7 @@ import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
+import Appointment from "components/Appointment/Appointment";
 
 storiesOf("Button", module)
   .addParameters({
