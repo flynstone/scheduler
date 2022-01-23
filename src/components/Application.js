@@ -9,22 +9,18 @@ import "components/Application.scss";
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
-    days: []
+    days: [],
+    appointments: {},
   });
 
-  const appointments = getAppointmentsForDay(state, state);
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
 
-  const getDailyAppointments = appointments.map((appointment) => {
-    const interview = getInterview(state, appointment.interview);
-    return (
+  const getDailyAppointments = dailyAppointments.map((appointment) => (
       <Appointment
         key={appointment.id}
-        id={appointment.time}
-        time={appointment.true}
-        interview={interview}
+        {...appointment}
       />
-    );
-  });
+  ));
     
 
 
