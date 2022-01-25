@@ -30,10 +30,10 @@ export default function Form(props) {
             className="appointment__create-input text--semi-bold"
             name="name"
             type="text"
-            placeholder="Enter Student Name"
-            onChange={(e) => setStudent(e.target.value)}
+            placeholder="Enter Student Name"   
             onKeyDown={handleEnterKey}
             value={student}
+            onChange={(e) => setStudent(e.target.value)}
           />
         </form>
         <InterviewerList 
