@@ -13,12 +13,14 @@ export default function Form(props) {
 
   const cancel = () => {
     reset();
+    // eslint-disable-next-line no-lone-blocks
     {props.onCancel()}
   }
 
   const handleEnterKey = (e) => {
     if (e.key === 'Enter') {
-      {props.onSave()}
+      // eslint-disable-next-line no-lone-blocks
+      {props.onSave();}
     }
   }
 
@@ -45,7 +47,7 @@ export default function Form(props) {
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={cancel}>Cancel</Button>
-          <Button confirm onClick={props.onSave}>Save</Button>
+          <Button confirm onClick={() => props.onSave(student, interviewer)}>Save</Button>
         </section>
       </section>
     </main>
