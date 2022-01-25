@@ -13,14 +13,12 @@ export default function Form(props) {
 
   const cancel = () => {
     reset();
-    // eslint-disable-next-line no-lone-blocks
-    {props.onCancel()}
+    props.onCancel()
   }
 
   const handleEnterKey = (e) => {
     if (e.key === 'Enter') {
-      // eslint-disable-next-line no-lone-blocks
-      {props.onSave();}
+      props.onSave();
     }
   }
 
