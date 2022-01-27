@@ -2,7 +2,7 @@ import React from "react";
 import DayListItem from "./DayListItem";
 
 export default function DayList(props) {
-  const { days, value, setDay} = props;
+  const { days, setDay} = props;
 
   const getDayList =
     Array.isArray(days) &&
@@ -11,7 +11,7 @@ export default function DayList(props) {
         key={day.id}
         name={day.name}
         spots={day.spots}
-        selected={day.name === value}
+        selected={day.name === props.value}
         setDay={setDay}
       />
       );
