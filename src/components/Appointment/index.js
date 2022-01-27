@@ -39,9 +39,6 @@ export default function Appointment(props) {
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch(error => {
-        transition(ERROR_SAVE, true)
-      });
   }
   
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -49,19 +46,18 @@ export default function Appointment(props) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
   function deleteInterview() {
     transition(DELETING, true);
-    
-    props
-      .cancelInterview(props.id)
-      .then(() => transition(EMPTY))
-      .catch(error => {
-        transition(ERROR_DELETE, true);
-      });
+    props.cancelInterview(props.id)
+        .then(() => transition(EMPTY))
+        .catch(error => {
+          transition(ERROR_DELETE, true);       
+        }    
+    );
   }
 
 
 
   function onConfirm() {
-    transition(CONFIRM, true);
+    transition(CONFIRM);
   }
 
 
@@ -81,8 +77,8 @@ export default function Appointment(props) {
 
       {mode === SHOW && (
         <Show
-          student={props.student}
-          interviewer={props.interview || { interviewer: { name: "" } }}
+          student={props.interview.student}
+          interviewer={props.interview.interviewer || { interviewer: { name: "" } }}
           onDelete={onConfirm}
           onEdit={() => transition(EDIT)}
         />
