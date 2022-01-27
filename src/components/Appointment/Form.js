@@ -3,62 +3,62 @@ import Button from '../Button';
 import InterviewerList from '../InterviewerList';
 
 export default function Form(props) {
-  const [student, setStudent] = useState(props.student || "");
+  const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
 
   const reset = () => {
-    setStudent("");
-    setInterviewer("");
+    setName("");
+    setInterviewer(null);
   }
 
   const cancel = () => {
     reset();
-    props.onCancel()
-  }
-
-  const handleEnterKey = (e) => {
-    if (e.key === 'Enter') {
-      props.onSave();
-    }
+    props.onCancel();
   }
 
   function validate() {
-    if (student === "") {
+    if (name === "") {
       setError("Student name cannot be blank");
       return;
     }
   
-    props.onSave(student, interviewer);
+    setError("");
+    props.onSave(name, interviewer);
   }
   
 
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
-      <form onSubmit={event => event.preventDefault()}>
+      <form autocomplete="off" onSubmit={event => event.preventDefault()}>
           <input
             className="appointment__create-input text--semi-bold"
             name="name"
             type="text"
-            placeholder="Enter Student Name"   
-            onKeyDown={handleEnterKey}
-            value={student}
-            onChange={(e) => setStudent(e.target.value)}
+            placeholder="Enter Student Name"
+            value={name}
+            onChange={event => {
+              setName(event.target.value)
+            }}
             data-testid="student-name-input"
           />
-          <section className="appointment__validation">{error}</section>
         </form>
+        <section className="appointment__validation">{error}</section>
         <InterviewerList 
           interviewers={props.interviewers}
-          onChange={setInterviewer}
           value={interviewer}
+          onChange={setInterviewer}
         />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button danger onClick={cancel}>Cancel</Button>
-          <Button confirm onClick={validate}>Save</Button>
+          <Button danger onClick={cancel}>
+            Cancel
+          </Button>
+          <Button confirm onClick={validate}>
+            Save
+          </Button>
         </section>
       </section>
     </main>
