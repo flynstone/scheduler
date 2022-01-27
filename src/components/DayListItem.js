@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import PropTypes from "prop-types";
 
 import "components/DayListItem.scss";
 
@@ -29,3 +30,7 @@ export default function DayListItem(props) {
     </li>
   );
 }
+
+DayListItem.propTypes = {
+  dayClass: PropTypes.array.isRequired
+};
