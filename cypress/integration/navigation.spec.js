@@ -1,20 +1,14 @@
-/// <reference types="cypress" />
-
-// Welcome to Cypress!
-//
-// This spec file contains a variety of sample tests
-// for a todo list app that are designed to demonstrate
-// the power of writing tests in Cypress.
-//
-// To learn more about how Cypress works and
-// what makes it such an awesome testing tool,
-// please read our getting started guide:
-// https://on.cypress.io/introduction-to-cypress
-
-
 describe("Navigation", () => {
   it("should visit root", () => {
     cy.visit("/");
   });
+  
+  it("should navigate to Tuesday", () => {
+    cy.visit('/');
+
+    cy.contains('[data-testid=day]', 'Tuesday')
+      .click()
+      .should('have.class', 'day-list__item--selected');
+  });  
 });
 
