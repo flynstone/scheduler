@@ -28,12 +28,12 @@ npm run storybook
 ## Preview
 
 
-!["screenshot description"](public/images/scheduler-deleting.png)
+!["screenshot description"](docs/scheduler-deleting.png)
 
 ## Jest
 
-!["screenshot description"](public/images/tests.png)
+!["screenshot description"](docs/tests.png)
 
 ## Cypress
 
-!["screenshot description"](public/images/cypress.png)
+!["screenshot description"](docs/cypress.png)
