@@ -1,5 +1,7 @@
 # Interview Scheduler
 
+My first react application
+
 ## Setup
 
 Install dependencies with `npm install`.
@@ -21,3 +23,17 @@ npm test
 ```sh
 npm run storybook
 ```
+
+
+## Preview
+
+
+!["screenshot description"](public/images/scheduler-deleting.png)
+
+## Jest
+
+!["screenshot description"](public/images/tests.png)
+
+## Cypress
+
+!["screenshot description"](public/images/cypress.png)
