@@ -1,14 +1,13 @@
-import React, {useEffect} from 'react';
-import Header from './Header';
-import Show from './Show';
-import Empty from './Empty';
-import Status from './Status';
-import Form from './Form';
-import Error from './Error';
-import Confirm from './Confirm';
-import './styles.scss';
-import useVisualMode from 'hooks/useVisualMode';
-
+import React, { useEffect } from "react";
+import Header from "./Header";
+import Show from "./Show";
+import Empty from "./Empty";
+import Status from "./Status";
+import Form from "./Form";
+import Error from "./Error";
+import Confirm from "./Confirm";
+import "./styles.scss";
+import useVisualMode from "hooks/useVisualMode";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -21,7 +20,7 @@ const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
-  const {mode, transition, back} = useVisualMode(
+  const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
@@ -31,35 +30,30 @@ export default function Appointment(props) {
   function save(name, interviewer) {
     const interview = {
       student: name,
-      interviewer
+      interviewer,
     };
-  
+
     transition(SAVING);
-  
-    props
-      .bookInterview(props.id, interview)
-      .then(() => transition(SHOW))
+
+    props.bookInterview(props.id, interview).then(() => transition(SHOW));
   }
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
   //                         Delete
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
   function deleteInterview() {
     transition(DELETING, true);
-    props.cancelInterview(props.id)
-        .then(() => transition(EMPTY))
-        .catch(error => {
-          transition(ERROR_DELETE, true);       
-        }    
-    );
+    props
+      .cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch((error) => {
+        transition(ERROR_DELETE);
+      });
   }
-
-
 
   function onConfirm() {
     transition(CONFIRM);
   }
-
 
   useEffect(() => {
     if (props.interview && mode === EMPTY) {
@@ -78,12 +72,13 @@ export default function Appointment(props) {
       {mode === SHOW && (
         <Show
           student={props.interview.student}
-          interviewer={props.interview.interviewer || { interviewer: { name: "" } }}
+          interviewer={
+            props.interview.interviewer || { interviewer: { name: "" } }
+          }
           onDelete={onConfirm}
           onEdit={() => transition(EDIT)}
         />
       )}
-
 
       {mode === CREATE && (
         <Form
@@ -105,7 +100,7 @@ export default function Appointment(props) {
       {mode === DELETING && <Status message={"Deleting"} />}
       {mode === EDIT && (
         <Form
-          student={props.interview.student}
+          name={props.interview.student}
           interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
           onCancel={back}
@@ -113,8 +108,10 @@ export default function Appointment(props) {
         />
       )}
 
-      {mode === ERROR_SAVE && <Error message="Unable to save" onClose={ back } />}
-      {mode === ERROR_SAVE && <Error message="Unable to delete" onClose={ back } />}
+      {mode === ERROR_SAVE && <Error message="Unable to save" onClose={back} />}
+      {mode === ERROR_SAVE && (
+        <Error message="Unable to delete" onClose={back} />
+      )}
     </article>
   );
-};
+}

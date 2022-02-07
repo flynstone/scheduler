@@ -6,11 +6,10 @@ export default function useApplication() {
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {}
+    interviewers: {},
   });
 
   const setDay = (day) => setState({ ...state, day });
-
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -26,20 +25,18 @@ export default function useApplication() {
     return axios
       .put(`/api/appointments/${id}`, { interview })
       .then((response) => {
-        const count = updateSpots(state.day, state.days, 'REMOVE_SPOT');
-      
+        const count = updateSpots(state.day, state.days, "REMOVE_SPOT");
+
         setState({
           ...state,
           days: count,
           appointments,
         });
-    })
-    .catch((err) => {
-      console.log('Error: ', err.message);
-    });
+      })
+      .catch((err) => {
+        console.log("Error: ", err.message);
+      });
   }
-  
-
 
   function cancelInterview(id) {
     const appointment = {
@@ -52,71 +49,56 @@ export default function useApplication() {
       [id]: appointment,
     };
 
-    const count = updateSpots(state.day, state.days, "ADD_SPOT");
-
     return axios
       .delete(`/api/appointments/${id}`)
       .then((response) => {
+        const count = updateSpots(state.day, state.days, "ADD_SPOT");
         setState({
           ...state,
           days: count,
-          appointments
+          appointments,
         });
-    })
-    .catch((err) => {
-      console.log('Error: ', err.message);
-    });
-  }
-
-  const updateSpots = (param, days, value) => {
-    if (value === "REMOVE_SPOT") {
-      const dayArray = days.map((day) => {
-        return { ...day, spots: countingSpots(param, day, value) };
-      });
-      return dayArray;
-    }
-
-    if (value === "ADD_SPOT") {
-      const dayArray = days.map((day) => {
-        return { ...day, spots: countingSpots(param, day, value) };
       })
-      return dayArray;
-    }
+      .catch((err) => {
+        console.log("Error: ", err.message);
+      });
   }
 
-  const countingSpots = (param, day, value) => {
-    let spot = day.spots;
+  const updateSpots = (request) => {
+    const days = state.days.map((day) => {
+      if (day.name === state.day) {
+        if (request === "bookAppointment") {
+          return { ...day, spots: day.spots - 1 };
+        } else {
+          return { ...day, spots: day.spots + 1 };
+        }
+      } else {
+        return { ...day };
+      }
+    });
+    return days;
+  };
 
-    if (param === day.name && value === "REMOVE_SPOT") {
-      return spot - 1;
-    } else if (param === day.name && value === "ADD_SPOT") {
-      return spot + 1; 
-    } else {
-      return spot;
-    }
-  }
-
-    
   useEffect(() => {
     Promise.all([
       axios.get(`/api/days`),
       axios.get(`/api/appointments`),
-      axios.get(`/api/interviewers`)
-      ]).then((all) => {
-          const [first, second, third] = all;
-          setState((prev) => ({
-            ...prev,
-            days: first.data,
-            appointments: second.data,
-            interviewers: third.data,
-          }));
-        });
+      axios.get(`/api/interviewers`),
+    ]).then((all) => {
+      const [first, second, third] = all;
+      setState((prev) => ({
+        ...prev,
+        days: first.data,
+        appointments: second.data,
+        interviewers: third.data,
+      }));
+    });
   }, []);
 
   return {
     state,
     setDay,
     bookInterview,
-    cancelInterview
-  }
+    cancelInterview,
+  };
 }

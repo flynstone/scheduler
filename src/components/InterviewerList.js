@@ -10,9 +10,9 @@ import PropTypes from "prop-types";
 */
 
 export default function InterviewerList(props) {
-  const { onChange, value } = props;
+  const { interviewers, onChange, value } = props;
 
-  const getInterviewers = props.interviewers.map((interviewer) => {
+  const getInterviewers = interviewers.map((interviewer) => {
     return (
       <InterviewerListItem
         key={interviewer.id}
@@ -23,18 +23,15 @@ export default function InterviewerList(props) {
       />
     );
   });
-  
-  
+
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
-      <ul className="interviewers__list">
-        {getInterviewers}
-      </ul>
+      <ul className="interviewers__list">{getInterviewers}</ul>
     </section>
-  )
+  );
 }
 
 InterviewerList.propTypes = {
-  interviewers: PropTypes.array.isRequired
+  interviewers: PropTypes.array.isRequired,
 };
