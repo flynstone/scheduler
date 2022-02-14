@@ -22,20 +22,11 @@ export default function useApplication() {
       [id]: appointment,
     };
 
-    return axios
-      .put(`/api/appointments/${id}`, { interview })
-      .then((response) => {
-        const count = updateSpots(state.day, state.days, "REMOVE_SPOT");
-
-        setState({
-          ...state,
-          days: count,
-          appointments,
-        });
-      })
-      .catch((err) => {
-        console.log("Error: ", err.message);
-      });
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      const firstState = { ...state, appointments };
+      const remainingSpotsState = spotsRemaining(firstState, firstState.day);
+      setState(remainingSpotsState);
+    });
   }
 
   function cancelInterview(id) {
@@ -52,32 +43,31 @@ export default function useApplication() {
     return axios
       .delete(`/api/appointments/${id}`)
       .then((response) => {
-        const count = updateSpots(state.day, state.days, "ADD_SPOT");
-        setState({
-          ...state,
-          days: count,
-          appointments,
-        });
+        const firstState = { ...state, appointments };
+        const remainingSpotsState = spotsRemaining(firstState, firstState.day);
+        setState(remainingSpotsState);
       })
       .catch((err) => {
         console.log("Error: ", err.message);
       });
   }
 
-  const updateSpots = (request) => {
-    const days = state.days.map((day) => {
-      if (day.name === state.day) {
-        if (request === "bookAppointment") {
-          return { ...day, spots: day.spots - 1 };
-        } else {
-          return { ...day, spots: day.spots + 1 };
-        }
-      } else {
-        return { ...day };
-      }
-    });
-    return days;
-  };
+  function spotsRemaining(state, day) {
+    const remainingDay = day || state.day;
+    const objectDay = state.days.find((day) => day.name === remainingDay);
+    const listId = objectDay.appointments;
+    const spots = listId.filter(
+      (appointmentID) => !state.appointments[appointmentID].interview
+    ).length;
+
+    const newDay = { ...objectDay, spots };
+    const newDays = [...state.days];
+    const dayObjIndex = state.days.findIndex(
+      (day) => day.name === remainingDay
+    );
+    newDays[dayObjIndex] = newDay;
+    return { ...state, days: newDays };
+  }
 
   useEffect(() => {
     Promise.all([
